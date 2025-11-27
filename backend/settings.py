@@ -130,3 +130,46 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#ログ出力先のディレクトリを設定する
+LOG_BASE_DIR = "./log/"
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'simple': {
+            'format': "%(levelname)s %(asctime)s %(process)d %(thread)d %(module)s %(pathname)s:%(lineno)s %(message)s",
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_BASE_DIR, 'debug.log'),
+            'formatter': 'simple',
+            # 'filters': ['require_debug_true'],
+            'maxBytes': 1024 * 1024 * 5,  # サイズ（100MB)
+            'backupCount': 7, # 世代数
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
