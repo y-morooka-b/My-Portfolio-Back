@@ -6,6 +6,7 @@ class Categories(models.Model):
 
     家計簿の収支のカテゴリを管理するテーブル
     """
+    objects = models.Manager()
 
     # ID
     id = models.AutoField(primary_key=True)
