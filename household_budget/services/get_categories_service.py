@@ -1,6 +1,6 @@
 from django.db.models import QuerySet
 from django.http import HttpResponse
-from household_budget.libraries.core import response, ResponseBase
+from household_budget.libraries.core import ResponseBase, ServiseBase
 from django.core import serializers
 from household_budget.models import Categories
 
@@ -26,12 +26,10 @@ class ResponseGetCategories(ResponseBase):
             'categories': serializers.serialize('json', self.categories)
         })
 
-class GetCategoriesService:
+class GetCategoriesService(ServiseBase):
     """
     get_categories のメイン処理を担当する
     """
-    def __init__(self):
-        pass
 
     def main_process(self) -> HttpResponse:
         try:
@@ -43,4 +41,4 @@ class GetCategoriesService:
     def __process(self) -> HttpResponse:
         drops = Categories.objects.all()
         res = ResponseGetCategories(drops)
-        return response(res)
+        return self.response(res)
