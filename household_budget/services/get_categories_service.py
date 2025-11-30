@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, List
 from django.http import HttpResponse
-from household_budget.libraries.core import ResponseBase, ServiseBase
+from household_budget.libraries.core import ResponseBase, ServiceBase
 from household_budget.models import Categories
 
 import logging
@@ -19,7 +19,7 @@ class ResponseGetCategories(ResponseBase):
     def __init__(self, categories):
         self.categories = categories
 
-class GetCategoriesService(ServiseBase):
+class GetCategoriesService(ServiceBase):
     """
     get_categories のメイン処理を担当する
     """
