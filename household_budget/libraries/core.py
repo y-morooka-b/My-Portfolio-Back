@@ -20,7 +20,7 @@ class ResponseBase:
         """ json文字列にシリアライズ """
         return json.dumps(asdict(self))
 
-class ServiseBase:
+class ServiceBase:
     def response(self, data:ResponseBase):
         """ レスポンスデータの作成 """
 

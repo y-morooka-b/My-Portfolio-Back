@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.db import transaction
-from household_budget.libraries.core import ServiseBase, ResponseBase, RequestBase
+from household_budget.libraries.core import ServiceBase, ResponseBase, RequestBase
 from household_budget.models import Categories
 
 import logging
@@ -8,6 +8,9 @@ import logging
 logger = logging.getLogger()
 
 class RequestSetCategory(RequestBase):
+    """
+    set_category のリクエストデータクラス
+    """
     name: str
     type: int
 
@@ -15,19 +18,21 @@ class RequestSetCategory(RequestBase):
         self.name = name
         self.type = type
 
-    # def __init__(self, category_name: str, category_type: int):
-    #     self.category_name = category_name
-    #     self.category_type = category_type
-
-
 class ResponseSetCategory(ResponseBase):
+    """
+    set_category のレスポンスデータクラス
+    """
     success: bool
 
     def __init__(self, success):
         self.success = success
 
 
-class SetCategoryService(ServiseBase):
+class SetCategoryService(ServiceBase):
+    """
+    set_category のメイン処理を担当する
+    """
+
     request: RequestSetCategory
 
     def __init__(self, request: RequestSetCategory):
