@@ -1,30 +1,23 @@
-from django.db.models import QuerySet
+from dataclasses import dataclass
+from typing import Any, List
 from django.http import HttpResponse
 from household_budget.libraries.core import ResponseBase, ServiseBase
-from django.core import serializers
 from household_budget.models import Categories
 
-import json
 import logging
 
 logger = logging.getLogger()
 
-
+@dataclass
 class ResponseGetCategories(ResponseBase):
     """
     get_categories のレスポンスデータクラス
     """
 
-    categories:QuerySet
+    categories: List[dict[str, Any]]
 
     def __init__(self, categories):
         self.categories = categories
-
-    def to_json(self):
-        """ json文字列にシリアライズ """
-        return json.dumps({
-            'categories': serializers.serialize('json', self.categories)
-        })
 
 class GetCategoriesService(ServiseBase):
     """
@@ -40,5 +33,7 @@ class GetCategoriesService(ServiseBase):
 
     def __process(self) -> HttpResponse:
         drops = Categories.objects.all()
+        drops= list(drops.values())
+
         res = ResponseGetCategories(drops)
         return self.response(res)
