@@ -32,7 +32,7 @@ class GetCategoriesService(ServiceBase):
             return HttpResponse(e)
 
     def __process(self) -> HttpResponse:
-        drops = Categories.objects.all()
+        drops = Categories.objects.all().order_by('type', 'id')
         drops= list(drops.values())
 
         res = ResponseGetCategories(drops)

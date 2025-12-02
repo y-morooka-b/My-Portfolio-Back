@@ -17,6 +17,7 @@ class RequestSetCategory(RequestBase):
     def __init__(self, name: str, type: int):
         self.name = name
         self.type = type
+        super().__init__()
 
 class ResponseSetCategory(ResponseBase):
     """

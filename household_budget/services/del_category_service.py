@@ -15,6 +15,7 @@ class RequestDelCategory(RequestBase):
 
     def __init__(self, id:int):
         self.id = id
+        super().__init__()
 
 class ResponseDelCategory(ResponseBase):
     """
