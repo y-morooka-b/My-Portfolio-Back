@@ -16,13 +16,15 @@
 
 ### 他ライブラリ
 
-| パッケージ名 | バージョン |
-| --- | --- |
-| asgiref | v3.10.0 |
-| certifi | v2025.11.12 |
-| charset-normalizer | v3.4.4 |
-| Django | v5.2 |
-| idna | v3.11 |
-| requests | v2.32.5 |
-| sqlparse | v0.5.3 |
-| urllib3 | v2.5.0 |
+| パッケージ名              | バージョン      |
+|---------------------|------------|
+| asgiref             | 3.11.0     |
+| certifi             | 2025.11.12 |
+| charset-normalizer  | 3.4.4      |
+| Django              | 5.2        |
+| django-cors-headers | 4.9.0      |
+| idna                | 3.11       |
+| mysqlclient         | 2.2.7      |
+| requests            | 2.32.5     |
+| sqlparse            | 0.5.3      |
+| urllib3             | 2.5.0      |
