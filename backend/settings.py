@@ -168,7 +168,7 @@ LOGGING = {
             'filename': os.path.join(LOG_BASE_DIR, 'debug.log'),
             'formatter': 'simple',
             # 'filters': ['require_debug_true'],
-            'maxBytes': 1024 * 1024 * 5,  # サイズ（100MB)
+            'maxBytes': 1024 * 5,  # サイズ（5MB)
             'backupCount': 7, # 世代数
         }
     },

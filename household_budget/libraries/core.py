@@ -7,7 +7,7 @@ logger = logging.getLogger()
 
 class RequestBase:
     def __init__(self, **kwargs):
-        pass
+        logger.info(f'<request>: {self.__dict__}')
 
     @classmethod
     def from_json(cls, json_str):
