@@ -1,10 +1,10 @@
 from household_budget.services.del_category_service import RequestDelCategory, DelCategoryService
 from household_budget.services.get_categories_service import GetCategoriesService
 from household_budget.services.set_category_service import SetCategoryService, RequestSetCategory
+from household_budget.services.set_income_and_expenditure import RequestSetIncomeAndExpenditure, SetIncomeAndExpenditure
 from household_budget.services.update_category import RequestUpdateCategory, UpdateCategoryService
 
-
-# Create your views here.
+# カテゴリ
 def get_categories(request):
     """ カテゴリ一覧を取得する """
     obj = GetCategoriesService()
@@ -26,4 +26,13 @@ def update_category(request):
     """ カテゴリを更新する """
     request = RequestUpdateCategory.from_json(request.body.decode("utf-8"))
     obj = UpdateCategoryService(request)
+    return obj.main_process()
+
+
+# 収支
+
+def set_income_and_expenditure(request):
+    """ 収支を設定する """
+    request = RequestSetIncomeAndExpenditure.from_json(request.body.decode("utf-8"))
+    obj = SetIncomeAndExpenditure(request)
     return obj.main_process()
