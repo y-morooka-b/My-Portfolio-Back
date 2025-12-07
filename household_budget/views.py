@@ -4,6 +4,8 @@ from household_budget.services.get_income_and_expenditure_record import GetIncom
 from household_budget.services.set_category_service import SetCategoryService, RequestSetCategory
 from household_budget.services.set_income_and_expenditure import RequestSetIncomeAndExpenditure, SetIncomeAndExpenditure
 from household_budget.services.update_category import RequestUpdateCategory, UpdateCategoryService
+from household_budget.services.update_income_and_expenditure import RequestUpdateIncomeAndExpenditure, UpdateIncomeAndExpenditureService
+
 
 # カテゴリ
 def get_categories(request):
@@ -41,4 +43,9 @@ def set_income_and_expenditure(request):
     """ 収支を設定する """
     request = RequestSetIncomeAndExpenditure.from_json(request.body.decode("utf-8"))
     obj = SetIncomeAndExpenditure(request)
+    return obj.main_process()
+def update_income_and_expenditure(request):
+    """ 収支を更新する """
+    request = RequestUpdateIncomeAndExpenditure.from_json(request.body.decode("utf-8"))
+    obj = UpdateIncomeAndExpenditureService(request)
     return obj.main_process()
