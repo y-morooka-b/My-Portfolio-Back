@@ -153,7 +153,7 @@ LOGGING = {
     },
     'formatters': {
         'simple': {
-            'format': "%(levelname)s %(asctime)s %(process)d %(thread)d %(module)s %(pathname)s:%(lineno)s %(message)s",
+            'format': "%(levelname)s %(asctime)s %(threadName)s %(process)d %(thread)d %(module)s %(pathname)s:%(lineno)s %(message)s",
         }
     },
     'handlers': {
@@ -168,7 +168,7 @@ LOGGING = {
             'filename': os.path.join(LOG_BASE_DIR, 'debug.log'),
             'formatter': 'simple',
             # 'filters': ['require_debug_true'],
-            'maxBytes': 1024 * 5,  # サイズ（5MB)
+            'maxBytes': 1024 * 50,  # サイズ（50MB)
             'backupCount': 7, # 世代数
         }
     },

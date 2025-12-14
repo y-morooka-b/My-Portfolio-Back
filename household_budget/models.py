@@ -26,6 +26,8 @@ class IncomeAndExpenditureRecord(models.Model):
     id = models.AutoField(primary_key=True)
     # 金額
     amount = models.IntegerField()
+    # 購入場所・収入場所
+    place = models.TextField(default='')
     # カテゴリID
     category_id = models.ForeignKey(Categories, on_delete=models.PROTECT)
     # 取引日
