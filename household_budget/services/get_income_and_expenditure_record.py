@@ -55,9 +55,11 @@ class GetIncomeAndExpenditure(ServiceBase):
     """ get_income_and_expenditure のメイン処理を担当する """
 
     request: RequestGetIncomeAndExpenditure
+    _response: ResponseGetIncomeAndExpenditure
 
     def __init__(self, request: RequestGetIncomeAndExpenditure):
         self.request = request
+        self._response = ResponseGetIncomeAndExpenditure()
 
     def main_process(self) -> HttpResponse:
         try:
@@ -67,8 +69,10 @@ class GetIncomeAndExpenditure(ServiceBase):
             return HttpResponse(e)
 
     def __process(self) -> HttpResponse:
-        res = ResponseGetIncomeAndExpenditure()
+        self.__create_income_and_expense_matrix_management_set()
+        return self.response(self._response)
 
+    def __create_income_and_expense_matrix_management_set(self):
         for day, weekday in self.__get_dates_and_weekdays(self.request.year, self.request.month):
             matrix = (IncomeAndExpenditureRecord.objects
             .annotate(category_name=F('category_id__name'))
@@ -89,13 +93,15 @@ class GetIncomeAndExpenditure(ServiceBase):
             .order_by('category_id__type'))
 
             income_expenditure_matrix_set = IncomeAndExpenditureMatrixSet(day, weekday, list(matrix))
+
+            # 支出
             records = matrix.filter(category_id__type=0)
             income_expenditure_matrix_set.expenditure = sum(item["amount"] for item in records)
+            # 収入
             records = matrix.filter(category_id__type=1)
             income_expenditure_matrix_set.income = sum(item["amount"] for item in records)
 
-            res.add_matrix_set(income_expenditure_matrix_set)
-        return self.response(res)
+            self._response.add_matrix_set(income_expenditure_matrix_set)
 
     def __get_dates_and_weekdays(self, year, month) -> List:
         """ 指定年月の全日付と曜日を取得 """
