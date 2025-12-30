@@ -15,4 +15,5 @@ urlpatterns = [
     path('set_income_and_expenditure', income_and_expenditure.set_income_and_expenditure, name='set_income_and_expenditure'),
     path('del_income_and_expenditure', income_and_expenditure.del_income_and_expenditure, name='del_income_and_expenditure'),
     path('update_income_and_expenditure', income_and_expenditure.update_income_and_expenditure, name='update_income_and_expenditure'),
+    path('get_income_and_expenditure_matrix_set', income_and_expenditure.get_income_and_expenditure_matrix_set, name='get_income_and_expenditure_matrix_set'),
 ]
