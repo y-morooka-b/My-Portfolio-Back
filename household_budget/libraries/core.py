@@ -8,6 +8,7 @@ logger = logging.getLogger()
 
 class RequestBase:
     def __init__(self, **kwargs):
+        logger.info(f'<API name>: {type(self)}')
         logger.info(f'<request>: {self.__dict__}')
 
     @classmethod
