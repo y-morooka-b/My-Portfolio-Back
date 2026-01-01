@@ -1,6 +1,7 @@
+from enum import nonmember
 from typing import List, Any
 from datetime import datetime
-from django.db.models import F, Sum
+from django.db.models import F, Sum, QuerySet, Model
 from django.http import HttpResponse
 from household_budget.libraries.core import ServiceBase, ResponseBase, RequestBase
 from household_budget.models import IncomeAndExpenditureRecord
@@ -23,12 +24,17 @@ class RequestGetMonthlyOverview(ResponseBase):
 
 class ResponseGetMonthlyOverview(ResponseBase):
     """ get_monthly_overview のレスポンスデータクラス """
-    sum_income_list: List[dict[str, Any]] = []
-    sum_expenditure_list: List[dict[str, Any]] = []
+
+    total_expenditure: int
+    total_income: int
+    sum_expenditure_list: List[dict[str, Any]]
+    sum_income_list: List[dict[str, Any]]
 
     def __init__(self):
-        self.sum_income_list = []
+        self.total_expenditure = 0
+        self.total_income = 0
         self.sum_expenditure_list = []
+        self.sum_income_list = []
 
 
 class GetMonthlyOverview(ServiceBase):
@@ -63,9 +69,37 @@ class GetMonthlyOverview(ServiceBase):
                 'category_type',
                 'amount'
             )
+            .order_by('category_id__type', 'category_id__id')
         )
 
-        self._response.sum_income_list = list(income_and_expenditure.filter(category_type=0).values("category_name", "category_type").annotate(total=Sum("amount")))
-        self._response.sum_expenditure_list = list(income_and_expenditure.filter(category_type=1).values("category_name", "category_type").annotate(total=Sum("amount")))
+        self.__set_graph_data(income_and_expenditure)
+        self.__set_total_amount(income_and_expenditure)
 
         return self.response(self._response)
+
+
+    def __set_graph_data(self, income_and_expenditure: QuerySet[Model | Any, dict[str, Any]]) -> None:
+        """ グラフ用データをレスポンスに設定 """
+
+        self._response.sum_expenditure_list = list(
+            income_and_expenditure
+                .filter(category_type=0)
+                .values("category_name", "category_type")
+                .annotate(total=Sum("amount"))
+        )
+
+        self._response.sum_income_list = list(
+            income_and_expenditure
+                .filter(category_type=1)
+                .values("category_name", "category_type")
+                .annotate(total=Sum("amount"))
+        )
+
+    def __set_total_amount(self, income_and_expenditure: QuerySet[Model | Any, dict[str, Any]]) -> None:
+        """ 支出の合計をレスポンスに設定 """
+
+        records = income_and_expenditure.filter(category_id__type=0)
+        self._response.total_expenditure = sum(item["amount"] for item in records)
+
+        records = income_and_expenditure.filter(category_id__type=1)
+        self._response.total_income = sum(item["amount"] for item in records)
