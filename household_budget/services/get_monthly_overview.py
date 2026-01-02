@@ -4,6 +4,7 @@ from datetime import datetime
 from django.db.models import F, Sum, QuerySet, Model
 from django.http import HttpResponse
 from household_budget.libraries.core import ServiceBase, ResponseBase, RequestBase
+from household_budget.libraries.date_library import get_now_date
 from household_budget.models import IncomeAndExpenditureRecord
 
 import logging
@@ -55,7 +56,7 @@ class GetMonthlyOverview(ServiceBase):
             return HttpResponse(e)
 
     def __process(self) -> HttpResponse:
-        now = datetime.now()
+        now = get_now_date()
 
         income_and_expenditure = (IncomeAndExpenditureRecord.objects
             .annotate(category_name=F('category_id__name'), category_type=F('category_id__type'))
