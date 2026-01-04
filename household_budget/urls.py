@@ -1,10 +1,13 @@
 from django.urls import path
+from .views import home
 from .views import categories
 from .views import income_and_expenditure
 
 app_name = 'household_budget'
 
 urlpatterns = [
+    # ホーム画面
+    path('get_monthly_overview', home.get_monthly_overview, name='get_monthly_overview'),
     # カテゴリ関連
     path('get_categories', categories.get_categories, name='get_categories'),
     path('set_category', categories.set_category, name='set_category'),
